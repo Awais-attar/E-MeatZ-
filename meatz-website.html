@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MeatZ — Premium Quality Meats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red:       #C8001A;
+    --red-light: #E8002A;
+    --red-dark:  #8B0011;
+    --gold:      #D4A017;
+    --black:     #0E0E0E;
+    --dark:      #161616;
+    --dark2:     #1E1E1E;
+    --dark3:     #272727;
+    --border:    rgba(255,255,255,0.08);
+    --text:      #F0EDE8;
+    --muted:     #9A9490;
+    --white:     #FFFFFF;
+    --radius:    12px;
+    --radius-sm: 8px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { display: block; max-width: 100%; }
+  button { cursor: pointer; border: none; font-family: inherit; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+  /* ===== NAVBAR ===== */
+  .navbar {
+    position: sticky; top: 0; z-index: 1000;
+    background: rgba(14,14,14,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex; align-items: center; gap: 2rem;
+    height: 68px;
+    transition: box-shadow 0.3s;
+  }
+  .navbar.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900;
+    color: var(--white); flex-shrink: 0;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--red); }
+  .search-bar {
+    flex: 1; max-width: 420px;
+    display: flex; align-items: center;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 50px; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .search-bar:focus-within { border-color: var(--red); }
+  .search-bar input {
+    flex: 1; background: none; border: none; outline: none;
+    padding: 10px 16px; color: var(--text); font-size: 0.875rem;
+    font-family: inherit;
+  }
+  .search-bar input::placeholder { color: var(--muted); }
+  .search-bar button {
+    background: var(--red); padding: 10px 18px;
+    color: white; font-size: 0.875rem; transition: background 0.2s;
+  }
+  .search-bar button:hover { background: var(--red-light); }
+  .nav-links {
+    display: flex; align-items: center; gap: 2rem;
+    margin-left: auto; list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.9rem; font-weight: 500; color: var(--muted);
+    transition: color 0.2s; position: relative;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); }
+  .nav-links a.active::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 2px; background: var(--red); border-radius: 2px;
+  }
+  .nav-icons { display: flex; gap: 12px; align-items: center; }
+  .nav-icon {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--dark3); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 1rem; transition: all 0.2s;
+    position: relative;
+  }
+  .nav-icon:hover { border-color: var(--red); color: var(--white); }
+  .nav-icon .badge {
+    position: absolute; top: -4px; right: -4px;
+    width: 16px; height: 16px; background: var(--red);
+    border-radius: 50%; font-size: 0.6rem; color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative; min-height: 560px;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0E0E0E 0%, #1a0606 50%, #0E0E0E 100%);
+  }
+  .hero-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1615937722923-67f6deaf2cc9?w=1400&q=80');
+    background-size: cover; background-position: center;
+    opacity: 0.18;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(14,14,14,0.95) 40%, rgba(14,14,14,0.1) 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 80px 5%; max-width: 600px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(200,0,26,0.15); border: 1px solid rgba(200,0,26,0.3);
+    color: #FF6B6B; padding: 6px 14px; border-radius: 50px;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 1.2rem;
+    animation: fadeSlideUp 0.6s ease both;
+  }
+  .hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 900; line-height: 1.1;
+    color: var(--white); margin-bottom: 0.5rem;
+    animation: fadeSlideUp 0.6s 0.1s ease both;
+  }
+  .hero h1 em { color: var(--red); font-style: italic; }
+  .hero p {
+    color: var(--muted); font-size: 1.05rem;
+    margin-bottom: 2rem; max-width: 400px;
+    animation: fadeSlideUp 0.6s 0.2s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    animation: fadeSlideUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--red); color: white;
+    padding: 13px 28px; border-radius: 50px;
+    font-size: 0.9rem; font-weight: 600;
+    transition: all 0.2s; border: none;
+  }
+  .btn-primary:hover { background: var(--red-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,0,26,0.4); }
+  .btn-outline {
+    background: transparent; color: var(--white);
+    padding: 13px 28px; border-radius: 50px;
+    font-size: 0.9rem; font-weight: 600;
+    border: 1px solid var(--border); transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+  .hero-stats {
+    position: absolute; right: 5%; bottom: 40px; z-index: 2;
+    display: flex; gap: 24px;
+    animation: fadeSlideUp 0.6s 0.4s ease both;
+  }
+  .hero-stat {
+    text-align: center; padding: 16px 20px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .hero-stat .num { font-size: 1.8rem; font-weight: 700; color: var(--white); line-height: 1; }
+  .hero-stat .lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== FEATURE BADGES ===== */
+  .features {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 5%;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .feature-item {
+    background: var(--dark);
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 14px;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .feature-item:hover { background: var(--dark2); }
+  .feature-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: rgba(200,0,26,0.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; color: var(--red);
+  }
+  .feature-item h4 { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+  .feature-item p { font-size: 0.75rem; color: var(--muted); }
+  .feature-item .know-more {
+    margin-top: 4px; font-size: 0.7rem; color: var(--red);
+    font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+
+  /* ===== SECTION HEADER ===== */
+  .section { padding: 60px 5%; }
+  .section-header {
+    display: flex; align-items: baseline;
+    justify-content: space-between; margin-bottom: 32px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700; color: var(--white);
+  }
+  .section-title span { color: var(--red); }
+  .explore-link {
+    font-size: 0.85rem; font-weight: 600; color: var(--red);
+    display: flex; align-items: center; gap: 6px; transition: gap 0.2s;
+  }
+  .explore-link:hover { gap: 10px; }
+
+  /* ===== TOP SELLING ===== */
+  .top-selling { background: var(--dark); }
+  .top-selling-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 20px; align-items: start;
+  }
+  .product-hero-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden; position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+  .product-hero-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
+  .product-hero-card .discount-tag {
+    position: absolute; top: 12px; left: 12px; z-index: 2;
+    background: var(--red); color: white;
+    font-size: 0.75rem; font-weight: 700;
+    padding: 4px 10px; border-radius: 50px;
+  }
+  .product-hero-card img {
+    width: 100%; height: 220px; object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .product-hero-card:hover img { transform: scale(1.04); }
+  .product-hero-card .card-body { padding: 16px; }
+  .product-hero-card .card-body h3 {
+    font-size: 0.95rem; font-weight: 600; color: var(--white);
+    margin-bottom: 10px;
+  }
+  .price-row { display: flex; align-items: center; gap: 12px; }
+  .price {
+    font-size: 1.4rem; font-weight: 700; color: var(--gold);
+    font-family: 'Playfair Display', serif;
+  }
+  .qty-btn {
+    display: flex; align-items: center; gap: 0;
+    border: 1px solid var(--border); border-radius: 50px;
+    overflow: hidden;
+  }
+  .qty-btn span {
+    padding: 6px 12px; font-size: 0.8rem;
+    color: var(--muted); border-right: 1px solid var(--border);
+  }
+  .qty-btn button {
+    background: none; color: var(--white); padding: 6px 12px;
+    font-size: 1rem; transition: background 0.2s;
+  }
+  .qty-btn button:hover { background: var(--dark3); }
+  .add-cart-btn {
+    background: var(--red); color: white;
+    padding: 8px 20px; border-radius: 50px;
+    font-size: 0.82rem; font-weight: 600;
+    margin-left: auto; transition: all 0.2s;
+  }
+  .add-cart-btn:hover { background: var(--red-light); transform: translateY(-1px); }
+
+  /* Categories panel */
+  .categories-panel {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    min-width: 180px;
+  }
+  .categories-panel h3 {
+    font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 14px;
+  }
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cat-item {
+    background: var(--dark3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 8px;
+    text-align: center; cursor: pointer; transition: all 0.2s;
+  }
+  .cat-item:hover { border-color: var(--red); background: rgba(200,0,26,0.08); }
+  .cat-item img { width: 44px; height: 44px; object-fit: cover; border-radius: 50%; margin: 0 auto 6px; }
+  .cat-item span { font-size: 0.72rem; color: var(--muted); display: block; }
+  .cat-more {
+    grid-column: 1/-1; text-align: center;
+    background: var(--dark3); border: 1px dashed var(--border);
+    border-radius: var(--radius-sm); padding: 10px;
+    font-size: 0.8rem; color: var(--red); font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .cat-more:hover { background: rgba(200,0,26,0.08); }
+
+  /* ===== PROMO BANNER ===== */
+  .promo-strip {
+    background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 100%);
+    padding: 20px 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    overflow: hidden; position: relative;
+  }
+  .promo-strip::before {
+    content: '🍖 🥩 🍗 🦐 🐟 🦀';
+    position: absolute; right: 5%; font-size: 2rem; opacity: 0.15;
+    letter-spacing: 12px;
+  }
+  .promo-strip h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-style: italic; color: white;
+  }
+  .promo-strip span { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+
+  /* ===== PRODUCT CARDS ===== */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .product-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer; position: relative;
+  }
+  .product-card:hover { transform: translateY(-5px); box-shadow: 0 20px 48px rgba(0,0,0,0.5); }
+  .product-card .wishlist-btn {
+    position: absolute; top: 10px; right: 10px; z-index: 2;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(14,14,14,0.7);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; color: var(--muted); transition: all 0.2s;
+  }
+  .product-card .wishlist-btn:hover { color: var(--red); border-color: var(--red); }
+  .product-card img {
+    width: 100%; height: 180px; object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .product-card:hover img { transform: scale(1.05); }
+  .product-card .p-body { padding: 14px; }
+  .product-card .p-name {
+    font-size: 0.88rem; font-weight: 600; color: var(--white);
+    margin-bottom: 2px; line-height: 1.3;
+  }
+  .product-card .p-weight { font-size: 0.75rem; color: var(--muted); margin-bottom: 10px; }
+  .product-card .p-prices {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  .p-price { font-size: 1.05rem; font-weight: 700; color: var(--gold); }
+  .p-mrp { font-size: 0.78rem; color: var(--muted); text-decoration: line-through; }
+  .buy-btn {
+    width: 100%; background: var(--red); color: white;
+    padding: 10px; border-radius: var(--radius-sm);
+    font-size: 0.85rem; font-weight: 600;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .buy-btn:hover { background: var(--red-light); }
+  .buy-btn svg { width: 14px; height: 14px; }
+
+  /* ===== REVIEWS ===== */
+  .reviews { background: var(--dark); }
+  .reviews-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  }
+  .review-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px; position: relative;
+    transition: border-color 0.2s;
+  }
+  .review-card:hover { border-color: rgba(200,0,26,0.3); }
+  .review-card .quote {
+    font-size: 2.5rem; color: var(--red); line-height: 0;
+    margin-bottom: 12px; font-family: 'Playfair Display', serif; opacity: 0.6;
+  }
+  .review-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+  .review-card p strong { color: var(--white); }
+  .reviewer { display: flex; align-items: center; gap: 12px; }
+  .reviewer-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--red); display: flex; align-items: center;
+    justify-content: center; font-weight: 700; font-size: 0.85rem; color: white;
+    flex-shrink: 0;
+  }
+  .reviewer-info .name { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+  .reviewer-info .email { font-size: 0.75rem; color: var(--muted); }
+  .stars { color: #F4B942; font-size: 0.8rem; margin-bottom: 2px; }
+
+  /* ===== DELIVERY BANNER ===== */
+  .delivery-banner {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin: 0 5% 60px;
+    padding: 40px 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .delivery-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1615937722923-67f6deaf2cc9?w=800&q=60') center/cover;
+    opacity: 0.06;
+  }
+  .delivery-banner-content { position: relative; z-index: 1; }
+  .delivery-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; color: var(--white); margin-bottom: 6px;
+  }
+  .delivery-banner h2 span { color: var(--red); }
+  .delivery-banner p { color: var(--muted); font-size: 0.9rem; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding: 48px 5% 24px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 40px; margin-bottom: 40px;
+  }
+  .footer-brand .logo { font-size: 1.4rem; margin-bottom: 12px; display: block; }
+  .footer-brand p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+  .social-links { display: flex; gap: 10px; }
+  .social-link {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--dark3); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; color: var(--muted); transition: all 0.2s;
+  }
+  .social-link:hover { background: var(--red); border-color: var(--red); color: white; }
+  .footer-col h4 {
+    font-size: 0.85rem; font-weight: 700; color: var(--white);
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    font-size: 0.85rem; color: var(--muted); transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--white); }
+  .footer-contact p {
+    font-size: 0.85rem; color: var(--muted); margin-bottom: 8px;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .footer-contact p span:first-child { color: var(--red); flex-shrink: 0; }
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .footer-bottom p { font-size: 0.78rem; color: var(--muted); }
+  .footer-bottom a { color: var(--muted); transition: color 0.2s; }
+  .footer-bottom a:hover { color: var(--white); }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    background: var(--dark2); border: 1px solid rgba(200,0,26,0.4);
+    border-left: 4px solid var(--red);
+    border-radius: var(--radius-sm);
+    padding: 14px 20px; font-size: 0.88rem; color: var(--white);
+    display: flex; align-items: center; gap: 10px;
+    transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    max-width: 320px;
+  }
+  .toast.show { transform: translateX(0); }
+  .toast-icon { font-size: 1.1rem; }
+
+  /* ===== CART DRAWER ===== */
+  .cart-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px); z-index: 2000;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+  .cart-drawer {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 380px; max-width: 90vw;
+    background: var(--dark2); border-left: 1px solid var(--border);
+    z-index: 2001; display: flex; flex-direction: column;
+    transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .cart-drawer.open { transform: translateX(0); }
+  .cart-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cart-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; color: var(--white);
+  }
+  .close-btn {
+    background: none; color: var(--muted); font-size: 1.4rem;
+    transition: color 0.2s; line-height: 1;
+  }
+  .close-btn:hover { color: var(--white); }
+  .cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
+  .cart-empty {
+    text-align: center; padding: 48px 24px; color: var(--muted);
+  }
+  .cart-empty .icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
+  .cart-item {
+    display: flex; gap: 12px; padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    animation: fadeSlideUp 0.3s ease;
+  }
+  .cart-item img { width: 64px; height: 64px; border-radius: var(--radius-sm); object-fit: cover; }
+  .cart-item-info { flex: 1; }
+  .cart-item-info .name { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+  .cart-item-info .weight { font-size: 0.75rem; color: var(--muted); }
+  .cart-item-info .price { font-size: 0.95rem; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .remove-item {
+    background: none; color: var(--muted); font-size: 1.1rem;
+    align-self: flex-start; transition: color 0.2s;
+  }
+  .remove-item:hover { color: var(--red); }
+  .cart-footer { padding: 16px 24px; border-top: 1px solid var(--border); }
+  .cart-total {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;
+  }
+  .cart-total span { color: var(--muted); font-size: 0.9rem; }
+  .cart-total strong { font-size: 1.3rem; color: var(--gold); font-weight: 700; }
+  .checkout-btn {
+    width: 100%; background: var(--red); color: white;
+    padding: 14px; border-radius: 50px; font-size: 0.95rem; font-weight: 600;
+    transition: all 0.2s;
+  }
+  .checkout-btn:hover { background: var(--red-light); transform: translateY(-1px); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .top-selling-grid { grid-template-columns: 1fr; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stats { display: none; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .delivery-banner { flex-direction: column; gap: 20px; text-align: center; }
+    .features-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="logo">Meat<span>Z</span></a>
+  <div class="search-bar">
+    <input type="text" placeholder="Search chicken, mutton, fish...">
+    <button>🔍</button>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#categories">Meat</a></li>
+    <li><a href="#about">About Us</a></li>
+  </ul>
+  <div class="nav-icons">
+    <a href="#" class="nav-icon" onclick="toggleCart(event)">🛒<span class="badge" id="cart-count">0</span></a>
+    <a href="#" class="nav-icon">👤</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🔴 Fresh & Fast Delivery</div>
+    <h1>The Premium<br><em>Quality Meats,</em><br>Enjoy Great Food.</h1>
+    <p>Farm-fresh, hand-picked meats delivered to your door in under 30 minutes. Quality you can taste.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+      <button class="btn-outline" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Read More</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num">15k+</div>
+      <div class="lbl">Happy Customers</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">30min</div>
+      <div class="lbl">Fast Delivery</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">100%</div>
+      <div class="lbl">Fresh Quality</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<div class="features">
+  <div class="features-grid">
+    <div class="feature-item">
+      <div class="feature-icon">🛡️</div>
+      <div>
+        <h4>Safe & Healthy</h4>
+        <p>Hygienically processed</p>
+        <div class="know-more">Know More →</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🏅</div>
+      <div>
+        <h4>Trust & Quality</h4>
+        <p>Certified premium cuts</p>
+        <div class="know-more">Know More →</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🚀</div>
+      <div>
+        <h4>Fast Delivery</h4>
+        <p>Delivered in 30 min</p>
+        <div class="know-more">Know More →</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">✨</div>
+      <div>
+        <h4>Fast & Fresh</h4>
+        <p>Slaughtered daily</p>
+        <div class="know-more">Know More →</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOP SELLING ===== -->
+<section class="section top-selling" id="shop">
+  <div class="section-header">
+    <h2 class="section-title">Current <span>Top Selling</span> Items</h2>
+  </div>
+  <div class="top-selling-grid">
+
+    <!-- Card 1 -->
+    <div class="product-hero-card">
+      <div class="discount-tag">15% Off</div>
+      <img src="https://5.imimg.com/data5/NV/OC/MY-28680328/fresh-mutton-boneless-1000x1000.png" alt="Fresh Mutton">
+      <div class="card-body">
+        <h3>Fresh Mutton Boneless Meat</h3>
+        <div class="price-row">
+          <span class="price">₹950</span>
+          <div class="qty-btn">
+            <span>1kg</span>
+            <button onclick="changeQty(this,-1)">−</button>
+            <button onclick="changeQty(this,1)">+</button>
+          </div>
+          <button class="add-cart-btn" onclick="addToCart('Fresh Mutton Boneless', 950, 'https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?w=100')">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="product-hero-card">
+      <div class="discount-tag">12% Off</div>
+      <img src="https://lenaturelmeat.com/cdn/shop/files/ChickenBoanless4.jpg?v=1686216588&width=1445" alt="Fresh Chicken">
+      <div class="card-body">
+        <h3>Fresh Chicken Full Body</h3>
+        <div class="price-row">
+          <span class="price">₹550</span>
+          <div class="qty-btn">
+            <span>1kg</span>
+            <button onclick="changeQty(this,-1)">−</button>
+            <button onclick="changeQty(this,1)">+</button>
+          </div>
+          <button class="add-cart-btn" onclick="addToCart('Fresh Chicken Full Body', 550, 'https://images.unsplash.com/photo-1604503468506-a8da13d11d36?w=100')">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories-panel" id="categories">
+      <h3>Categories</h3>
+      <div class="cat-grid">
+        <div class="cat-item">
+          <img src="https://images.unsplash.com/photo-1604503468506-a8da13d11d36?w=80&q=70" alt="Chicken">
+          <span>Chicken</span>
+        </div>
+        <div class="cat-item">
+          <img src="https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=80&q=70" alt="Prawns">
+          <span>Prawns</span>
+        </div>
+        <div class="cat-item">
+          <img src="https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?w=80&q=70" alt="Mutton">
+          <span>Mutton</span>
+        </div>
+        <div class="cat-item">
+          <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=80&q=70" alt="Fish">
+          <span>Fish</span>
+        </div>
+        <div class="cat-item">
+          <img src="https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=80&q=70" alt="Crabs">
+          <span>Crabs</span>
+        </div>
+        <div class="cat-item">
+          <img src="https://images.unsplash.com/photo-1617224908579-c92008d9bc9e?w=80&q=70" alt="Eggs">
+          <span>Eggs</span>
+        </div>
+        <div class="cat-more">+ More</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== PROMO ===== -->
+<div class="promo-strip">
+  <div>
+    <h2>Come on in and get this meat!</h2>
+    <span>Farm-fresh cuts, delivered daily to your doorstep</span>
+  </div>
+  <button class="btn-primary" onclick="document.getElementById('for-you').scrollIntoView({behavior:'smooth'})">Explore All →</button>
+</div>
+
+<!-- ===== FOR YOU ===== -->
+<section class="section" id="for-you">
+  <div class="section-header">
+    <h2 class="section-title">For <span>You</span></h2>
+    <a href="#" class="explore-link">Explore All →</a>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card">
+      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
+      <img src="https://lenaturelmeat.com/cdn/shop/files/ChickenBoanless4.jpg?v=1686216588&width=1445" alt="Chicken Boneless">
+      <div class="p-body">
+        <div class="p-name">Fresh Chicken Boneless Meat</div>
+        <div class="p-weight">1kg</div>
+        <div class="p-prices">
+          <span class="p-price">₹279</span>
+          <span class="p-mrp">₹299</span>
+        </div>
+        <button class="buy-btn" onclick="addToCart('Chicken Boneless', 279, 'https://images.unsplash.com/photo-1604503468506-a8da13d11d36?w=100')">
+          🛒 Buy Now
+        </button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
+      <img src="https://5.imimg.com/data5/NV/OC/MY-28680328/fresh-mutton-boneless-1000x1000.png" alt="Mutton Boneless">
+      <div class="p-body">
+        <div class="p-name">Fresh Mutton Boneless Meat</div>
+        <div class="p-weight">1kg</div>
+        <div class="p-prices">
+          <span class="p-price">₹859</span>
+          <span class="p-mrp">₹899</span>
+        </div>
+        <button class="buy-btn" onclick="addToCart('Mutton Boneless', 859, 'https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?w=100')">
+          🛒 Buy Now
+        </button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
+      <img src="https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=400&q=80" alt="Prawns">
+      <div class="p-body">
+        <div class="p-name">Fresh Prawns Boneless Meat</div>
+        <div class="p-weight">1kg</div>
+        <div class="p-prices">
+          <span class="p-price">₹689</span>
+          <span class="p-mrp">₹699</span>
+        </div>
+        <button class="buy-btn" onclick="addToCart('Fresh Prawns', 689, 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=100')">
+          🛒 Buy Now
+        </button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" alt="Fish">
+      <div class="p-body">
+        <div class="p-name">Fresh Fish Meat</div>
+        <div class="p-weight">1kg</div>
+        <div class="p-prices">
+          <span class="p-price">₹659</span>
+          <span class="p-mrp">₹699</span>
+        </div>
+        <button class="buy-btn" onclick="addToCart('Fresh Fish', 659, 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=100')">
+          🛒 Buy Now
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== RECENT ACTIVITY ===== -->
+<section class="section" style="background: var(--dark); padding-top: 0;">
+  <div class="section-header">
+    <h2 class="section-title">Recent <span>Activity</span></h2>
+    <a href="#" class="explore-link">Explore All →</a>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card">
+      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
+      <img src="https://5.imimg.com/data5/NV/OC/MY-28680328/fresh-mutton-boneless-1000x1000.png" alt="Mutton">
+      <div class="p-body">
+        <div class="p-name">Fresh Mutton Boneless Meat</div>
+        <div class="p-weight">1kg</div>
+        <div class="p-prices"><span class="p-price">₹859</span><span class="p-mrp">₹899</span></div>
+        <button class="buy-btn" onclick="addToCart('Mutton Boneless', 859, 'https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?w=100')">🛒 Buy Now</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" alt="Fish">
+      <div class="p-body">
+        <div class="p-name">Fresh Fish Meat</div>
+        <div class="p-weight">1kg</div>
+        <div class="p-prices"><span class="p-price">₹659</span><span class="p-mrp">₹699</span></div>
+        <button class="buy-btn" onclick="addToCart('Fresh Fish', 659, 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=100')">🛒 Buy Now</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
+      <img src="https://lenaturelmeat.com/cdn/shop/files/ChickenBoanless4.jpg?v=1686216588&width=1445" alt="Chicken">
+      <div class="p-body">
+        <div class="p-name">Fresh Chicken Boneless Meat</div>
+        <div class="p-weight">1kg</div>
+        <div class="p-prices"><span class="p-price">₹279</span><span class="p-mrp">₹299</span></div>
+        <button class="buy-btn" onclick="addToCart('Chicken Boneless', 279, 'https://images.unsplash.com/photo-1604503468506-a8da13d11d36?w=100')">🛒 Buy Now</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
+      <img src="https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=400&q=80" alt="Crabs">
+      <div class="p-body">
+        <div class="p-name">Fresh Crab Meat</div>
+        <div class="p-weight">1kg</div>
+        <div class="p-prices"><span class="p-price">₹749</span><span class="p-mrp">₹799</span></div>
+        <button class="buy-btn" onclick="addToCart('Fresh Crab', 749, 'https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=100')">🛒 Buy Now</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== REVIEWS ===== -->
+<section class="section reviews">
+  <div class="section-header">
+    <h2 class="section-title">Our Honest <span>Reviews</span></h2>
+    <a href="#" class="explore-link">See All →</a>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="quote">"</div>
+      <p>Wow, I am happy to share my experience with this <strong>MeatZ</strong> website. Fast &amp; Fresh Quality Meat will be delivered on order. I am thanking <strong>#MEATZ</strong> — absolutely loved it!</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">AA</div>
+        <div class="reviewer-info">
+          <div class="stars">★★★★★</div>
+          <div class="name">Attar Mohammad Awais</div>
+          <div class="email">attarmohammadawais05@gmail.com</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="quote">"</div>
+      <p>I cannot believe <strong>#MEATZ</strong> has such fast delivery! I was surprised — in just 15 minutes they delivered fresh prawns. Everyone should try <strong>#MEATZ</strong>. Highly recommended!</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">CB</div>
+        <div class="reviewer-info">
+          <div class="stars">★★★★★</div>
+          <div class="name">Chahath Basha</div>
+          <div class="email">chahathbashashaik05@gmail.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DELIVERY BANNER ===== -->
+<div class="delivery-banner">
+  <div class="delivery-banner-content">
+    <h2>Shop All Our Fresh Meats With<br><span>Free Delivery</span></h2>
+    <p>No minimum order • Delivered in 30 minutes • 100% fresh guaranteed</p>
+  </div>
+  <button class="btn-primary" style="font-size:1rem; padding:16px 36px;"
+    onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+    Shop Now →
+  </button>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer id="about">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">Meat<span style="color:var(--red)">Z</span></a>
+      <p>MeatZ is an online service platform where sellers sell fresh meat through this website. Delivery is available. Because of quality and fast delivery, MeatZ became popular in Hyderabad.</p>
+      <div class="social-links">
+        <a href="#" class="social-link">f</a>
+        <a href="#" class="social-link">in</a>
+        <a href="#" class="social-link">t</a>
+        <a href="#" class="social-link">w</a>
+        <a href="#" class="social-link">wa</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#about">About Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Policies</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms & Conditions</a></li>
+        <li><a href="#">Delivery Terms</a></li>
+        <li><a href="#">Imprint</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-contact">
+      <h4>Contact Us</h4>
+      <p><span>📍</span><span>A N Road, Hyderabad, India</span></p>
+      <p><span>📞</span><span>+91 XXXXX XXXXX</span></p>
+      <p><span>🕐</span><span>Open daily: 6 AM – 10 PM</span></p>
+      <p><span>🚚</span><span>Free delivery on all orders</span></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>All Rights Reserved © 2024 MeatZ. All pictures are for depiction purposes only.</p>
+    <p>
+      <a href="#">Privacy Policy</a> &nbsp;·&nbsp;
+      <a href="#">Terms</a> &nbsp;·&nbsp;
+      <a href="#">Imprint</a> &nbsp;·&nbsp;
+      <a href="#">Delivery Terms</a>
+    </p>
+  </div>
+</footer>
+
+<!-- ===== CART DRAWER ===== -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart(event)"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart 🛒</h3>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty">
+      <div class="icon">🛒</div>
+      <p>Your cart is empty.<br>Add some fresh meats!</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cart-total">₹0</strong>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout →</button>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✅</span>
+  <span id="toast-msg">Item added to cart!</span>
+</div>
+
+<script>
+  /* ===== NAVBAR SCROLL ===== */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  /* ===== CART STATE ===== */
+  let cart = [];
+
+  function addToCart(name, price, img) {
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ name, price, img, qty: 1 });
+    }
+    renderCart();
+    updateCartBadge();
+    showToast(`"${name}" added to cart! 🎉`);
+    openCart();
+  }
+
+  function renderCart() {
+    const container = document.getElementById('cart-items');
+    const footer = document.getElementById('cart-footer');
+    if (cart.length === 0) {
+      container.innerHTML = `<div class="cart-empty"><div class="icon">🛒</div><p>Your cart is empty.<br>Add some fresh meats!</p></div>`;
+      footer.style.display = 'none';
+      return;
+    }
+    footer.style.display = 'block';
+    container.innerHTML = cart.map((item, i) => `
+      <div class="cart-item">
+        <img src="${item.img}" alt="${item.name}">
+        <div class="cart-item-info">
+          <div class="name">${item.name}</div>
+          <div class="weight">${item.qty}kg</div>
+          <div class="price">₹${(item.price * item.qty).toLocaleString('en-IN')}</div>
+        </div>
+        <button class="remove-item" onclick="removeFromCart(${i})">✕</button>
+      </div>
+    `).join('');
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    document.getElementById('cart-total').textContent = '₹' + total.toLocaleString('en-IN');
+  }
+
+  function removeFromCart(idx) {
+    cart.splice(idx, 1);
+    renderCart();
+    updateCartBadge();
+  }
+
+  function updateCartBadge() {
+    const total = cart.reduce((s, i) => s + i.qty, 0);
+    document.getElementById('cart-count').textContent = total;
+  }
+
+  function openCart() {
+    document.getElementById('cart-overlay').classList.add('open');
+    document.getElementById('cart-drawer').classList.add('open');
+  }
+
+  function closeCart() {
+    document.getElementById('cart-overlay').classList.remove('open');
+    document.getElementById('cart-drawer').classList.remove('open');
+  }
+
+  function toggleCart(e) {
+    e.preventDefault();
+    const isOpen = document.getElementById('cart-drawer').classList.contains('open');
+    isOpen ? closeCart() : openCart();
+  }
+
+  function checkout() {
+    showToast('🎉 Order placed! Delivering in 30 minutes.');
+    cart = [];
+    renderCart();
+    updateCartBadge();
+    closeCart();
+  }
+
+  /* ===== TOAST ===== */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  /* ===== QTY BUTTON ===== */
+  function changeQty(btn, delta) {
+    const span = btn.parentElement.querySelector('span');
+    const current = parseInt(span.textContent);
+    const newVal = Math.max(1, current + delta);
+    span.textContent = newVal + 'kg';
+  }
+
+  /* ===== WISHLIST ===== */
+  function toggleWishlist(btn) {
+    const active = btn.textContent === '♥';
+    btn.textContent = active ? '♡' : '♥';
+    btn.style.color = active ? '' : 'var(--red)';
+    showToast(active ? 'Removed from wishlist' : '❤️ Added to wishlist!');
+  }
+
+  /* ===== SCROLL ANIMATIONS ===== */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.product-card, .review-card, .feature-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
