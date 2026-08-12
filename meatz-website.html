@@ -3,1153 +3,225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MeatZ — Premium Quality Meats</title>
+<title>MeatZ — Fresh Meat Delivery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 <style>
-  /* ===== RESET & BASE ===== */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --red:       #C8001A;
-    --red-light: #E8002A;
-    --red-dark:  #8B0011;
-    --gold:      #D4A017;
-    --black:     #0E0E0E;
-    --dark:      #161616;
-    --dark2:     #1E1E1E;
-    --dark3:     #272727;
-    --border:    rgba(255,255,255,0.08);
-    --text:      #F0EDE8;
-    --muted:     #9A9490;
-    --white:     #FFFFFF;
-    --radius:    12px;
-    --radius-sm: 8px;
-  }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--black);
-    color: var(--text);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-  a { text-decoration: none; color: inherit; }
-  img { display: block; max-width: 100%; }
-  button { cursor: pointer; border: none; font-family: inherit; }
-
-  /* ===== SCROLLBAR ===== */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--dark); }
-  ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
-
-  /* ===== NAVBAR ===== */
-  .navbar {
-    position: sticky; top: 0; z-index: 1000;
-    background: rgba(14,14,14,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 5%;
-    display: flex; align-items: center; gap: 2rem;
-    height: 68px;
-    transition: box-shadow 0.3s;
-  }
-  .navbar.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem; font-weight: 900;
-    color: var(--white); flex-shrink: 0;
-    letter-spacing: -0.5px;
-  }
-  .logo span { color: var(--red); }
-  .search-bar {
-    flex: 1; max-width: 420px;
-    display: flex; align-items: center;
-    background: var(--dark3);
-    border: 1px solid var(--border);
-    border-radius: 50px; overflow: hidden;
-    transition: border-color 0.2s;
-  }
-  .search-bar:focus-within { border-color: var(--red); }
-  .search-bar input {
-    flex: 1; background: none; border: none; outline: none;
-    padding: 10px 16px; color: var(--text); font-size: 0.875rem;
-    font-family: inherit;
-  }
-  .search-bar input::placeholder { color: var(--muted); }
-  .search-bar button {
-    background: var(--red); padding: 10px 18px;
-    color: white; font-size: 0.875rem; transition: background 0.2s;
-  }
-  .search-bar button:hover { background: var(--red-light); }
-  .nav-links {
-    display: flex; align-items: center; gap: 2rem;
-    margin-left: auto; list-style: none;
-  }
-  .nav-links a {
-    font-size: 0.9rem; font-weight: 500; color: var(--muted);
-    transition: color 0.2s; position: relative;
-  }
-  .nav-links a:hover, .nav-links a.active { color: var(--white); }
-  .nav-links a.active::after {
-    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
-    height: 2px; background: var(--red); border-radius: 2px;
-  }
-  .nav-icons { display: flex; gap: 12px; align-items: center; }
-  .nav-icon {
-    width: 38px; height: 38px; border-radius: 50%;
-    background: var(--dark3); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--muted); font-size: 1rem; transition: all 0.2s;
-    position: relative;
-  }
-  .nav-icon:hover { border-color: var(--red); color: var(--white); }
-  .nav-icon .badge {
-    position: absolute; top: -4px; right: -4px;
-    width: 16px; height: 16px; background: var(--red);
-    border-radius: 50%; font-size: 0.6rem; color: white;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600;
-  }
-
-  /* ===== HERO ===== */
-  .hero {
-    position: relative; min-height: 560px;
-    display: flex; align-items: center;
-    overflow: hidden;
-  }
-  .hero-bg {
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, #0E0E0E 0%, #1a0606 50%, #0E0E0E 100%);
-  }
-  .hero-bg::before {
-    content: '';
-    position: absolute; inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1615937722923-67f6deaf2cc9?w=1400&q=80');
-    background-size: cover; background-position: center;
-    opacity: 0.18;
-  }
-  .hero-bg::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(90deg, rgba(14,14,14,0.95) 40%, rgba(14,14,14,0.1) 100%);
-  }
-  .hero-content {
-    position: relative; z-index: 2;
-    padding: 80px 5%; max-width: 600px;
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(200,0,26,0.15); border: 1px solid rgba(200,0,26,0.3);
-    color: #FF6B6B; padding: 6px 14px; border-radius: 50px;
-    font-size: 0.78rem; font-weight: 600; letter-spacing: 1px;
-    text-transform: uppercase; margin-bottom: 1.2rem;
-    animation: fadeSlideUp 0.6s ease both;
-  }
-  .hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.4rem, 5vw, 3.8rem);
-    font-weight: 900; line-height: 1.1;
-    color: var(--white); margin-bottom: 0.5rem;
-    animation: fadeSlideUp 0.6s 0.1s ease both;
-  }
-  .hero h1 em { color: var(--red); font-style: italic; }
-  .hero p {
-    color: var(--muted); font-size: 1.05rem;
-    margin-bottom: 2rem; max-width: 400px;
-    animation: fadeSlideUp 0.6s 0.2s ease both;
-  }
-  .hero-btns {
-    display: flex; gap: 12px; flex-wrap: wrap;
-    animation: fadeSlideUp 0.6s 0.3s ease both;
-  }
-  .btn-primary {
-    background: var(--red); color: white;
-    padding: 13px 28px; border-radius: 50px;
-    font-size: 0.9rem; font-weight: 600;
-    transition: all 0.2s; border: none;
-  }
-  .btn-primary:hover { background: var(--red-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,0,26,0.4); }
-  .btn-outline {
-    background: transparent; color: var(--white);
-    padding: 13px 28px; border-radius: 50px;
-    font-size: 0.9rem; font-weight: 600;
-    border: 1px solid var(--border); transition: all 0.2s;
-  }
-  .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
-  .hero-stats {
-    position: absolute; right: 5%; bottom: 40px; z-index: 2;
-    display: flex; gap: 24px;
-    animation: fadeSlideUp 0.6s 0.4s ease both;
-  }
-  .hero-stat {
-    text-align: center; padding: 16px 20px;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-  }
-  .hero-stat .num { font-size: 1.8rem; font-weight: 700; color: var(--white); line-height: 1; }
-  .hero-stat .lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-  @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ===== FEATURE BADGES ===== */
-  .features {
-    background: var(--dark);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 24px 5%;
-  }
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .feature-item {
-    background: var(--dark);
-    padding: 20px 24px;
-    display: flex; align-items: center; gap: 14px;
-    transition: background 0.2s;
-    cursor: pointer;
-  }
-  .feature-item:hover { background: var(--dark2); }
-  .feature-icon {
-    width: 44px; height: 44px; flex-shrink: 0;
-    background: rgba(200,0,26,0.12);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.25rem; color: var(--red);
-  }
-  .feature-item h4 { font-size: 0.85rem; font-weight: 600; color: var(--white); }
-  .feature-item p { font-size: 0.75rem; color: var(--muted); }
-  .feature-item .know-more {
-    margin-top: 4px; font-size: 0.7rem; color: var(--red);
-    font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
-  }
-
-  /* ===== SECTION HEADER ===== */
-  .section { padding: 60px 5%; }
-  .section-header {
-    display: flex; align-items: baseline;
-    justify-content: space-between; margin-bottom: 32px;
-  }
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem; font-weight: 700; color: var(--white);
-  }
-  .section-title span { color: var(--red); }
-  .explore-link {
-    font-size: 0.85rem; font-weight: 600; color: var(--red);
-    display: flex; align-items: center; gap: 6px; transition: gap 0.2s;
-  }
-  .explore-link:hover { gap: 10px; }
-
-  /* ===== TOP SELLING ===== */
-  .top-selling { background: var(--dark); }
-  .top-selling-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 20px; align-items: start;
-  }
-  .product-hero-card {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden; position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-  }
-  .product-hero-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
-  .product-hero-card .discount-tag {
-    position: absolute; top: 12px; left: 12px; z-index: 2;
-    background: var(--red); color: white;
-    font-size: 0.75rem; font-weight: 700;
-    padding: 4px 10px; border-radius: 50px;
-  }
-  .product-hero-card img {
-    width: 100%; height: 220px; object-fit: cover;
-    transition: transform 0.4s;
-  }
-  .product-hero-card:hover img { transform: scale(1.04); }
-  .product-hero-card .card-body { padding: 16px; }
-  .product-hero-card .card-body h3 {
-    font-size: 0.95rem; font-weight: 600; color: var(--white);
-    margin-bottom: 10px;
-  }
-  .price-row { display: flex; align-items: center; gap: 12px; }
-  .price {
-    font-size: 1.4rem; font-weight: 700; color: var(--gold);
-    font-family: 'Playfair Display', serif;
-  }
-  .qty-btn {
-    display: flex; align-items: center; gap: 0;
-    border: 1px solid var(--border); border-radius: 50px;
-    overflow: hidden;
-  }
-  .qty-btn span {
-    padding: 6px 12px; font-size: 0.8rem;
-    color: var(--muted); border-right: 1px solid var(--border);
-  }
-  .qty-btn button {
-    background: none; color: var(--white); padding: 6px 12px;
-    font-size: 1rem; transition: background 0.2s;
-  }
-  .qty-btn button:hover { background: var(--dark3); }
-  .add-cart-btn {
-    background: var(--red); color: white;
-    padding: 8px 20px; border-radius: 50px;
-    font-size: 0.82rem; font-weight: 600;
-    margin-left: auto; transition: all 0.2s;
-  }
-  .add-cart-btn:hover { background: var(--red-light); transform: translateY(-1px); }
-
-  /* Categories panel */
-  .categories-panel {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    min-width: 180px;
-  }
-  .categories-panel h3 {
-    font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 14px;
-  }
-  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .cat-item {
-    background: var(--dark3); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 10px 8px;
-    text-align: center; cursor: pointer; transition: all 0.2s;
-  }
-  .cat-item:hover { border-color: var(--red); background: rgba(200,0,26,0.08); }
-  .cat-item img { width: 44px; height: 44px; object-fit: cover; border-radius: 50%; margin: 0 auto 6px; }
-  .cat-item span { font-size: 0.72rem; color: var(--muted); display: block; }
-  .cat-more {
-    grid-column: 1/-1; text-align: center;
-    background: var(--dark3); border: 1px dashed var(--border);
-    border-radius: var(--radius-sm); padding: 10px;
-    font-size: 0.8rem; color: var(--red); font-weight: 600;
-    cursor: pointer; transition: background 0.2s;
-  }
-  .cat-more:hover { background: rgba(200,0,26,0.08); }
-
-  /* ===== PROMO BANNER ===== */
-  .promo-strip {
-    background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 100%);
-    padding: 20px 5%;
-    display: flex; align-items: center; justify-content: space-between;
-    overflow: hidden; position: relative;
-  }
-  .promo-strip::before {
-    content: '🍖 🥩 🍗 🦐 🐟 🦀';
-    position: absolute; right: 5%; font-size: 2rem; opacity: 0.15;
-    letter-spacing: 12px;
-  }
-  .promo-strip h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem; font-style: italic; color: white;
-  }
-  .promo-strip span { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
-
-  /* ===== PRODUCT CARDS ===== */
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-  }
-  .product-card {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer; position: relative;
-  }
-  .product-card:hover { transform: translateY(-5px); box-shadow: 0 20px 48px rgba(0,0,0,0.5); }
-  .product-card .wishlist-btn {
-    position: absolute; top: 10px; right: 10px; z-index: 2;
-    width: 32px; height: 32px; border-radius: 50%;
-    background: rgba(14,14,14,0.7);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.9rem; color: var(--muted); transition: all 0.2s;
-  }
-  .product-card .wishlist-btn:hover { color: var(--red); border-color: var(--red); }
-  .product-card img {
-    width: 100%; height: 180px; object-fit: cover;
-    transition: transform 0.4s;
-  }
-  .product-card:hover img { transform: scale(1.05); }
-  .product-card .p-body { padding: 14px; }
-  .product-card .p-name {
-    font-size: 0.88rem; font-weight: 600; color: var(--white);
-    margin-bottom: 2px; line-height: 1.3;
-  }
-  .product-card .p-weight { font-size: 0.75rem; color: var(--muted); margin-bottom: 10px; }
-  .product-card .p-prices {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
-  }
-  .p-price { font-size: 1.05rem; font-weight: 700; color: var(--gold); }
-  .p-mrp { font-size: 0.78rem; color: var(--muted); text-decoration: line-through; }
-  .buy-btn {
-    width: 100%; background: var(--red); color: white;
-    padding: 10px; border-radius: var(--radius-sm);
-    font-size: 0.85rem; font-weight: 600;
-    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .buy-btn:hover { background: var(--red-light); }
-  .buy-btn svg { width: 14px; height: 14px; }
-
-  /* ===== REVIEWS ===== */
-  .reviews { background: var(--dark); }
-  .reviews-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-  }
-  .review-card {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px; position: relative;
-    transition: border-color 0.2s;
-  }
-  .review-card:hover { border-color: rgba(200,0,26,0.3); }
-  .review-card .quote {
-    font-size: 2.5rem; color: var(--red); line-height: 0;
-    margin-bottom: 12px; font-family: 'Playfair Display', serif; opacity: 0.6;
-  }
-  .review-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
-  .review-card p strong { color: var(--white); }
-  .reviewer { display: flex; align-items: center; gap: 12px; }
-  .reviewer-avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    background: var(--red); display: flex; align-items: center;
-    justify-content: center; font-weight: 700; font-size: 0.85rem; color: white;
-    flex-shrink: 0;
-  }
-  .reviewer-info .name { font-size: 0.85rem; font-weight: 600; color: var(--white); }
-  .reviewer-info .email { font-size: 0.75rem; color: var(--muted); }
-  .stars { color: #F4B942; font-size: 0.8rem; margin-bottom: 2px; }
-
-  /* ===== DELIVERY BANNER ===== */
-  .delivery-banner {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    margin: 0 5% 60px;
-    padding: 40px 5%;
-    display: flex; align-items: center; justify-content: space-between;
-    position: relative; overflow: hidden;
-  }
-  .delivery-banner::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: url('https://images.unsplash.com/photo-1615937722923-67f6deaf2cc9?w=800&q=60') center/cover;
-    opacity: 0.06;
-  }
-  .delivery-banner-content { position: relative; z-index: 1; }
-  .delivery-banner h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem; color: var(--white); margin-bottom: 6px;
-  }
-  .delivery-banner h2 span { color: var(--red); }
-  .delivery-banner p { color: var(--muted); font-size: 0.9rem; }
-
-  /* ===== FOOTER ===== */
-  footer {
-    background: var(--dark);
-    border-top: 1px solid var(--border);
-    padding: 48px 5% 24px;
-  }
-  .footer-grid {
-    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-    gap: 40px; margin-bottom: 40px;
-  }
-  .footer-brand .logo { font-size: 1.4rem; margin-bottom: 12px; display: block; }
-  .footer-brand p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
-  .social-links { display: flex; gap: 10px; }
-  .social-link {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: var(--dark3); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.85rem; color: var(--muted); transition: all 0.2s;
-  }
-  .social-link:hover { background: var(--red); border-color: var(--red); color: white; }
-  .footer-col h4 {
-    font-size: 0.85rem; font-weight: 700; color: var(--white);
-    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
-  }
-  .footer-col ul { list-style: none; }
-  .footer-col ul li { margin-bottom: 10px; }
-  .footer-col ul li a {
-    font-size: 0.85rem; color: var(--muted); transition: color 0.2s;
-  }
-  .footer-col ul li a:hover { color: var(--white); }
-  .footer-contact p {
-    font-size: 0.85rem; color: var(--muted); margin-bottom: 8px;
-    display: flex; gap: 8px; align-items: flex-start;
-  }
-  .footer-contact p span:first-child { color: var(--red); flex-shrink: 0; }
-  .footer-bottom {
-    border-top: 1px solid var(--border);
-    padding-top: 24px;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 12px;
-  }
-  .footer-bottom p { font-size: 0.78rem; color: var(--muted); }
-  .footer-bottom a { color: var(--muted); transition: color 0.2s; }
-  .footer-bottom a:hover { color: var(--white); }
-
-  /* ===== TOAST ===== */
-  .toast {
-    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-    background: var(--dark2); border: 1px solid rgba(200,0,26,0.4);
-    border-left: 4px solid var(--red);
-    border-radius: var(--radius-sm);
-    padding: 14px 20px; font-size: 0.88rem; color: var(--white);
-    display: flex; align-items: center; gap: 10px;
-    transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    max-width: 320px;
-  }
-  .toast.show { transform: translateX(0); }
-  .toast-icon { font-size: 1.1rem; }
-
-  /* ===== CART DRAWER ===== */
-  .cart-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px); z-index: 2000;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s;
-  }
-  .cart-overlay.open { opacity: 1; pointer-events: all; }
-  .cart-drawer {
-    position: fixed; top: 0; right: 0; bottom: 0;
-    width: 380px; max-width: 90vw;
-    background: var(--dark2); border-left: 1px solid var(--border);
-    z-index: 2001; display: flex; flex-direction: column;
-    transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-  }
-  .cart-drawer.open { transform: translateX(0); }
-  .cart-header {
-    padding: 20px 24px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .cart-header h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem; color: var(--white);
-  }
-  .close-btn {
-    background: none; color: var(--muted); font-size: 1.4rem;
-    transition: color 0.2s; line-height: 1;
-  }
-  .close-btn:hover { color: var(--white); }
-  .cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
-  .cart-empty {
-    text-align: center; padding: 48px 24px; color: var(--muted);
-  }
-  .cart-empty .icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
-  .cart-item {
-    display: flex; gap: 12px; padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-    animation: fadeSlideUp 0.3s ease;
-  }
-  .cart-item img { width: 64px; height: 64px; border-radius: var(--radius-sm); object-fit: cover; }
-  .cart-item-info { flex: 1; }
-  .cart-item-info .name { font-size: 0.85rem; font-weight: 600; color: var(--white); }
-  .cart-item-info .weight { font-size: 0.75rem; color: var(--muted); }
-  .cart-item-info .price { font-size: 0.95rem; font-weight: 700; color: var(--gold); margin-top: 4px; }
-  .remove-item {
-    background: none; color: var(--muted); font-size: 1.1rem;
-    align-self: flex-start; transition: color 0.2s;
-  }
-  .remove-item:hover { color: var(--red); }
-  .cart-footer { padding: 16px 24px; border-top: 1px solid var(--border); }
-  .cart-total {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 16px;
-  }
-  .cart-total span { color: var(--muted); font-size: 0.9rem; }
-  .cart-total strong { font-size: 1.3rem; color: var(--gold); font-weight: 700; }
-  .checkout-btn {
-    width: 100%; background: var(--red); color: white;
-    padding: 14px; border-radius: 50px; font-size: 0.95rem; font-weight: 600;
-    transition: all 0.2s;
-  }
-  .checkout-btn:hover { background: var(--red-light); transform: translateY(-1px); }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 900px) {
-    .nav-links { display: none; }
-    .top-selling-grid { grid-template-columns: 1fr; }
-    .reviews-grid { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    .hero-stats { display: none; }
-    .features-grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 600px) {
-    .footer-grid { grid-template-columns: 1fr; }
-    .delivery-banner { flex-direction: column; gap: 20px; text-align: center; }
-    .features-grid { grid-template-columns: 1fr; }
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#d90429;--red2:#b90322;--dark:#111;--card:#191919;--soft:#242424;--text:#f7f7f7;--muted:#a7a7a7;--gold:#f2c14e}
+html{scroll-behavior:smooth}
+body{font-family:"DM Sans",sans-serif;background:#111;color:var(--text);line-height:1.5}
+button,input{font:inherit}button{cursor:pointer;border:0}a{text-decoration:none;color:inherit}img{display:block;width:100%}
+.container{width:min(1180px,92%);margin:auto}
+.nav{height:68px;position:sticky;top:0;z-index:50;background:rgba(17,17,17,.94);backdrop-filter:blur(12px);border-bottom:1px solid #292929}
+.nav-inner{height:100%;display:flex;align-items:center;gap:24px}
+.logo{font:800 27px "Playfair Display";white-space:nowrap}.logo span{color:var(--red)}
+.search{display:flex;flex:1;max-width:430px;background:var(--soft);border-radius:30px;overflow:hidden}
+.search input{width:100%;padding:11px 16px;background:transparent;color:white;border:0;outline:0}
+.search button{padding:0 17px;background:var(--red);color:#fff}
+.links{display:flex;gap:22px;margin-left:auto}.links a{color:var(--muted);font-size:14px}.links a:hover{color:white}
+.icon-btn{position:relative;width:40px;height:40px;border-radius:50%;background:var(--soft);color:#fff}.badge{position:absolute;right:-3px;top:-3px;background:var(--red);width:18px;height:18px;border-radius:50%;font-size:11px;display:grid;place-items:center}
+.hero{min-height:500px;display:flex;align-items:center;background:linear-gradient(90deg,rgba(10,10,10,.97),rgba(10,10,10,.62)),url("https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?auto=format&fit=crop&w=1600&q=85") center/cover}
+.hero-content{padding:80px 0;max-width:600px}.pill{display:inline-block;background:rgba(217,4,41,.14);border:1px solid rgba(217,4,41,.35);color:#ff8094;padding:7px 13px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font:800 clamp(42px,6vw,72px)/1.02 "Playfair Display";margin-bottom:18px}h1 span{color:var(--red);font-style:italic}
+.hero p{color:#c3c3c3;max-width:500px;margin-bottom:28px}.btn{padding:13px 23px;border-radius:25px;font-weight:700}.primary{background:var(--red);color:white}.primary:hover{background:#ef1236}.ghost{background:transparent;border:1px solid #444;color:white;margin-left:8px}
+.features{background:#171717;border-bottom:1px solid #292929}.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px}.feature{padding:20px 16px;background:#171717;display:flex;gap:12px;align-items:center}.feature b{display:block;font-size:14px}.feature small{color:var(--muted)}
+.section{padding:55px 0}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.section h2{font:700 31px "Playfair Display"}.section h2 span{color:var(--red)}.muted{color:var(--muted);font-size:14px}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.card{background:var(--card);border:1px solid #292929;border-radius:14px;overflow:hidden;transition:.25s}.card:hover{transform:translateY(-5px);border-color:#444}.card-img{height:210px;object-fit:cover}.card-body{padding:15px}.card-body h3{font-size:16px;margin-bottom:4px}.weight{font-size:13px;color:var(--muted);margin-bottom:9px}.price{font-size:20px;color:var(--gold);font-weight:700}.old{font-size:12px;color:#777;text-decoration:line-through;margin-left:6px}.buy{width:100%;margin-top:12px;background:var(--red);color:white;padding:10px;border-radius:9px;font-weight:700}.buy:hover{background:var(--red2)}.heart{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.65);color:white}.img-wrap{position:relative}
+.categories{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}.cat{background:var(--card);border:1px solid #292929;border-radius:12px;padding:14px;text-align:center}.cat img{width:62px;height:62px;border-radius:50%;object-fit:cover;margin:auto auto 8px}.cat span{font-size:13px;color:#ddd}
+.promo{padding:28px;background:linear-gradient(100deg,#8f0019,var(--red));border-radius:16px;display:flex;justify-content:space-between;align-items:center}.promo h2{font:700 28px "Playfair Display"}.promo p{color:#ffd9df;font-size:14px}
+.reviews{display:grid;grid-template-columns:1fr 1fr;gap:18px}.review{background:var(--card);border:1px solid #292929;padding:22px;border-radius:14px}.stars{color:#f5c451;margin-bottom:8px}.review p{color:#bbb;font-size:14px;margin-bottom:15px}.person{font-weight:700;font-size:14px}
+footer{background:#0b0b0b;border-top:1px solid #292929;padding:42px 0}.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px}.footer-grid p,.footer-grid a{color:var(--muted);font-size:13px}.footer-grid h4{margin-bottom:12px}.footer-grid li{list-style:none;margin:7px 0}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);opacity:0;pointer-events:none;transition:.25s;z-index:80}.overlay.open{opacity:1;pointer-events:auto}
+.cart{position:fixed;right:0;top:0;height:100%;width:min(390px,92vw);background:#191919;z-index:90;transform:translateX(100%);transition:.3s;display:flex;flex-direction:column}.cart.open{transform:none}.cart-head,.cart-foot{padding:18px;border-bottom:1px solid #303030}.cart-head{display:flex;justify-content:space-between}.cart-items{padding:12px 18px;overflow:auto;flex:1}.cart-item{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid #303030}.cart-item img{width:58px;height:58px;object-fit:cover;border-radius:8px}.cart-item-info{flex:1}.cart-item-info small{color:var(--muted)}.remove{background:none;color:#aaa}.total{display:flex;justify-content:space-between;margin-bottom:12px}.empty{text-align:center;color:var(--muted);padding:60px 10px}
+.toast{position:fixed;right:20px;bottom:20px;background:#242424;border-left:4px solid var(--red);padding:13px 18px;border-radius:9px;transform:translateY(100px);transition:.3s;z-index:100}.toast.show{transform:none}
+@media(max-width:900px){.links{display:none}.products{grid-template-columns:repeat(2,1fr)}.feature-grid{grid-template-columns:repeat(2,1fr)}.categories{grid-template-columns:repeat(3,1fr)}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.nav-inner{gap:10px}.search{order:3;position:absolute;top:74px;left:4%;right:4%;max-width:none}.nav{margin-bottom:58px}.hero{min-height:520px}.products{grid-template-columns:1fr 1fr;gap:10px}.card-img{height:155px}.categories{grid-template-columns:repeat(3,1fr)}.feature-grid{grid-template-columns:1fr}.reviews{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.promo{display:block}.promo .btn{margin-top:15px}}
 </style>
 </head>
 <body>
 
-<!-- ===== NAVBAR ===== -->
-<nav class="navbar" id="navbar">
-  <a href="#" class="logo">Meat<span>Z</span></a>
-  <div class="search-bar">
-    <input type="text" placeholder="Search chicken, mutton, fish...">
-    <button>🔍</button>
-  </div>
-  <ul class="nav-links">
-    <li><a href="#" class="active">Home</a></li>
-    <li><a href="#shop">Shop</a></li>
-    <li><a href="#categories">Meat</a></li>
-    <li><a href="#about">About Us</a></li>
-  </ul>
-  <div class="nav-icons">
-    <a href="#" class="nav-icon" onclick="toggleCart(event)">🛒<span class="badge" id="cart-count">0</span></a>
-    <a href="#" class="nav-icon">👤</a>
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#">Meat<span>Z</span></a>
+    <div class="search"><input id="searchInput" placeholder="Search chicken, mutton, fish..."><button onclick="searchProducts()">⌕</button></div>
+    <div class="links"><a href="#">Home</a><a href="#shop">Shop</a><a href="#categories">Categories</a><a href="#about">About</a></div>
+    <button class="icon-btn" onclick="openCart()">🛒<span class="badge" id="cartCount">0</span></button>
   </div>
 </nav>
 
-<!-- ===== HERO ===== -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-badge">🔴 Fresh & Fast Delivery</div>
-    <h1>The Premium<br><em>Quality Meats,</em><br>Enjoy Great Food.</h1>
-    <p>Farm-fresh, hand-picked meats delivered to your door in under 30 minutes. Quality you can taste.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Now</button>
-      <button class="btn-outline" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Read More</button>
-    </div>
+  <div class="container hero-content">
+    <div class="pill">● Fresh & Fast Delivery</div>
+    <h1>Fresh meat.<br><span>Better taste.</span></h1>
+    <p>Premium chicken, mutton, fish and seafood — cleaned, packed and delivered fresh to your doorstep.</p>
+    <button class="btn primary" onclick="document.getElementById('shop').scrollIntoView()">Shop Now</button>
+    <button class="btn ghost" onclick="document.getElementById('about').scrollIntoView()">About Us</button>
   </div>
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="num">15k+</div>
-      <div class="lbl">Happy Customers</div>
-    </div>
-    <div class="hero-stat">
-      <div class="num">30min</div>
-      <div class="lbl">Fast Delivery</div>
-    </div>
-    <div class="hero-stat">
-      <div class="num">100%</div>
-      <div class="lbl">Fresh Quality</div>
+</section>
+
+<section class="features">
+  <div class="container feature-grid">
+    <div class="feature"><span>🛡️</span><div><b>Safe & Hygienic</b><small>Clean processing</small></div></div>
+    <div class="feature"><span>⭐</span><div><b>Premium Quality</b><small>Fresh daily</small></div></div>
+    <div class="feature"><span>🚚</span><div><b>Fast Delivery</b><small>At your doorstep</small></div></div>
+    <div class="feature"><span>❄️</span><div><b>Fresh Packed</b><small>Quality guaranteed</small></div></div>
+  </div>
+</section>
+
+<section class="section" id="shop">
+  <div class="container">
+    <div class="section-head"><div><h2>Popular <span>Products</span></h2><div class="muted">Fresh picks customers love</div></div></div>
+    <div class="products" id="products"></div>
+  </div>
+</section>
+
+<section class="section" id="categories">
+  <div class="container">
+    <div class="section-head"><h2>Shop by <span>Category</span></h2></div>
+    <div class="categories" id="categoriesGrid"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="promo"><div><h2>Fresh meat, delivered fast.</h2><p>Simple ordering. Great quality. No unnecessary complexity.</p></div><button class="btn" style="background:white;color:#111" onclick="document.getElementById('shop').scrollIntoView()">Explore Meat →</button></div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-head"><div><h2>What our <span>customers say</span></h2></div></div>
+    <div class="reviews">
+      <div class="review"><div class="stars">★★★★★</div><p>Fresh quality and a very simple ordering experience. The meat arrived well packed and fresh.</p><div class="person">Attar Mohammad Awais</div></div>
+      <div class="review"><div class="stars">★★★★★</div><p>Fast delivery and good quality. The prawns were fresh and the whole experience was smooth.</p><div class="person">Chahath Basha</div></div>
     </div>
   </div>
 </section>
 
-<!-- ===== FEATURES ===== -->
-<div class="features">
-  <div class="features-grid">
-    <div class="feature-item">
-      <div class="feature-icon">🛡️</div>
-      <div>
-        <h4>Safe & Healthy</h4>
-        <p>Hygienically processed</p>
-        <div class="know-more">Know More →</div>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon">🏅</div>
-      <div>
-        <h4>Trust & Quality</h4>
-        <p>Certified premium cuts</p>
-        <div class="know-more">Know More →</div>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon">🚀</div>
-      <div>
-        <h4>Fast Delivery</h4>
-        <p>Delivered in 30 min</p>
-        <div class="know-more">Know More →</div>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon">✨</div>
-      <div>
-        <h4>Fast & Fresh</h4>
-        <p>Slaughtered daily</p>
-        <div class="know-more">Know More →</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== TOP SELLING ===== -->
-<section class="section top-selling" id="shop">
-  <div class="section-header">
-    <h2 class="section-title">Current <span>Top Selling</span> Items</h2>
-  </div>
-  <div class="top-selling-grid">
-
-    <!-- Card 1 -->
-    <div class="product-hero-card">
-      <div class="discount-tag">15% Off</div>
-      <img src="https://5.imimg.com/data5/NV/OC/MY-28680328/fresh-mutton-boneless-1000x1000.png" alt="Fresh Mutton">
-      <div class="card-body">
-        <h3>Fresh Mutton Boneless Meat</h3>
-        <div class="price-row">
-          <span class="price">₹950</span>
-          <div class="qty-btn">
-            <span>1kg</span>
-            <button onclick="changeQty(this,-1)">−</button>
-            <button onclick="changeQty(this,1)">+</button>
-          </div>
-          <button class="add-cart-btn" onclick="addToCart('Fresh Mutton Boneless', 950, 'https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?w=100')">Add to Cart</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="product-hero-card">
-      <div class="discount-tag">12% Off</div>
-      <img src="https://lenaturelmeat.com/cdn/shop/files/ChickenBoanless4.jpg?v=1686216588&width=1445" alt="Fresh Chicken">
-      <div class="card-body">
-        <h3>Fresh Chicken Full Body</h3>
-        <div class="price-row">
-          <span class="price">₹550</span>
-          <div class="qty-btn">
-            <span>1kg</span>
-            <button onclick="changeQty(this,-1)">−</button>
-            <button onclick="changeQty(this,1)">+</button>
-          </div>
-          <button class="add-cart-btn" onclick="addToCart('Fresh Chicken Full Body', 550, 'https://images.unsplash.com/photo-1604503468506-a8da13d11d36?w=100')">Add to Cart</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Categories -->
-    <div class="categories-panel" id="categories">
-      <h3>Categories</h3>
-      <div class="cat-grid">
-        <div class="cat-item">
-          <img src="https://images.unsplash.com/photo-1604503468506-a8da13d11d36?w=80&q=70" alt="Chicken">
-          <span>Chicken</span>
-        </div>
-        <div class="cat-item">
-          <img src="https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=80&q=70" alt="Prawns">
-          <span>Prawns</span>
-        </div>
-        <div class="cat-item">
-          <img src="https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?w=80&q=70" alt="Mutton">
-          <span>Mutton</span>
-        </div>
-        <div class="cat-item">
-          <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=80&q=70" alt="Fish">
-          <span>Fish</span>
-        </div>
-        <div class="cat-item">
-          <img src="https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=80&q=70" alt="Crabs">
-          <span>Crabs</span>
-        </div>
-        <div class="cat-item">
-          <img src="https://images.unsplash.com/photo-1617224908579-c92008d9bc9e?w=80&q=70" alt="Eggs">
-          <span>Eggs</span>
-        </div>
-        <div class="cat-more">+ More</div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ===== PROMO ===== -->
-<div class="promo-strip">
-  <div>
-    <h2>Come on in and get this meat!</h2>
-    <span>Farm-fresh cuts, delivered daily to your doorstep</span>
-  </div>
-  <button class="btn-primary" onclick="document.getElementById('for-you').scrollIntoView({behavior:'smooth'})">Explore All →</button>
-</div>
-
-<!-- ===== FOR YOU ===== -->
-<section class="section" id="for-you">
-  <div class="section-header">
-    <h2 class="section-title">For <span>You</span></h2>
-    <a href="#" class="explore-link">Explore All →</a>
-  </div>
-  <div class="products-grid">
-
-    <div class="product-card">
-      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
-      <img src="https://lenaturelmeat.com/cdn/shop/files/ChickenBoanless4.jpg?v=1686216588&width=1445" alt="Chicken Boneless">
-      <div class="p-body">
-        <div class="p-name">Fresh Chicken Boneless Meat</div>
-        <div class="p-weight">1kg</div>
-        <div class="p-prices">
-          <span class="p-price">₹279</span>
-          <span class="p-mrp">₹299</span>
-        </div>
-        <button class="buy-btn" onclick="addToCart('Chicken Boneless', 279, 'https://images.unsplash.com/photo-1604503468506-a8da13d11d36?w=100')">
-          🛒 Buy Now
-        </button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
-      <img src="https://5.imimg.com/data5/NV/OC/MY-28680328/fresh-mutton-boneless-1000x1000.png" alt="Mutton Boneless">
-      <div class="p-body">
-        <div class="p-name">Fresh Mutton Boneless Meat</div>
-        <div class="p-weight">1kg</div>
-        <div class="p-prices">
-          <span class="p-price">₹859</span>
-          <span class="p-mrp">₹899</span>
-        </div>
-        <button class="buy-btn" onclick="addToCart('Mutton Boneless', 859, 'https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?w=100')">
-          🛒 Buy Now
-        </button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
-      <img src="https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=400&q=80" alt="Prawns">
-      <div class="p-body">
-        <div class="p-name">Fresh Prawns Boneless Meat</div>
-        <div class="p-weight">1kg</div>
-        <div class="p-prices">
-          <span class="p-price">₹689</span>
-          <span class="p-mrp">₹699</span>
-        </div>
-        <button class="buy-btn" onclick="addToCart('Fresh Prawns', 689, 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=100')">
-          🛒 Buy Now
-        </button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
-      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" alt="Fish">
-      <div class="p-body">
-        <div class="p-name">Fresh Fish Meat</div>
-        <div class="p-weight">1kg</div>
-        <div class="p-prices">
-          <span class="p-price">₹659</span>
-          <span class="p-mrp">₹699</span>
-        </div>
-        <button class="buy-btn" onclick="addToCart('Fresh Fish', 659, 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=100')">
-          🛒 Buy Now
-        </button>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ===== RECENT ACTIVITY ===== -->
-<section class="section" style="background: var(--dark); padding-top: 0;">
-  <div class="section-header">
-    <h2 class="section-title">Recent <span>Activity</span></h2>
-    <a href="#" class="explore-link">Explore All →</a>
-  </div>
-  <div class="products-grid">
-
-    <div class="product-card">
-      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
-      <img src="https://5.imimg.com/data5/NV/OC/MY-28680328/fresh-mutton-boneless-1000x1000.png" alt="Mutton">
-      <div class="p-body">
-        <div class="p-name">Fresh Mutton Boneless Meat</div>
-        <div class="p-weight">1kg</div>
-        <div class="p-prices"><span class="p-price">₹859</span><span class="p-mrp">₹899</span></div>
-        <button class="buy-btn" onclick="addToCart('Mutton Boneless', 859, 'https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?w=100')">🛒 Buy Now</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
-      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" alt="Fish">
-      <div class="p-body">
-        <div class="p-name">Fresh Fish Meat</div>
-        <div class="p-weight">1kg</div>
-        <div class="p-prices"><span class="p-price">₹659</span><span class="p-mrp">₹699</span></div>
-        <button class="buy-btn" onclick="addToCart('Fresh Fish', 659, 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=100')">🛒 Buy Now</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
-      <img src="https://lenaturelmeat.com/cdn/shop/files/ChickenBoanless4.jpg?v=1686216588&width=1445" alt="Chicken">
-      <div class="p-body">
-        <div class="p-name">Fresh Chicken Boneless Meat</div>
-        <div class="p-weight">1kg</div>
-        <div class="p-prices"><span class="p-price">₹279</span><span class="p-mrp">₹299</span></div>
-        <button class="buy-btn" onclick="addToCart('Chicken Boneless', 279, 'https://images.unsplash.com/photo-1604503468506-a8da13d11d36?w=100')">🛒 Buy Now</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <button class="wishlist-btn" onclick="toggleWishlist(this)">♡</button>
-      <img src="https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=400&q=80" alt="Crabs">
-      <div class="p-body">
-        <div class="p-name">Fresh Crab Meat</div>
-        <div class="p-weight">1kg</div>
-        <div class="p-prices"><span class="p-price">₹749</span><span class="p-mrp">₹799</span></div>
-        <button class="buy-btn" onclick="addToCart('Fresh Crab', 749, 'https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=100')">🛒 Buy Now</button>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ===== REVIEWS ===== -->
-<section class="section reviews">
-  <div class="section-header">
-    <h2 class="section-title">Our Honest <span>Reviews</span></h2>
-    <a href="#" class="explore-link">See All →</a>
-  </div>
-  <div class="reviews-grid">
-    <div class="review-card">
-      <div class="quote">"</div>
-      <p>Wow, I am happy to share my experience with this <strong>MeatZ</strong> website. Fast &amp; Fresh Quality Meat will be delivered on order. I am thanking <strong>#MEATZ</strong> — absolutely loved it!</p>
-      <div class="reviewer">
-        <div class="reviewer-avatar">AA</div>
-        <div class="reviewer-info">
-          <div class="stars">★★★★★</div>
-          <div class="name">Attar Mohammad Awais</div>
-          <div class="email">attarmohammadawais05@gmail.com</div>
-        </div>
-      </div>
-    </div>
-    <div class="review-card">
-      <div class="quote">"</div>
-      <p>I cannot believe <strong>#MEATZ</strong> has such fast delivery! I was surprised — in just 15 minutes they delivered fresh prawns. Everyone should try <strong>#MEATZ</strong>. Highly recommended!</p>
-      <div class="reviewer">
-        <div class="reviewer-avatar">CB</div>
-        <div class="reviewer-info">
-          <div class="stars">★★★★★</div>
-          <div class="name">Chahath Basha</div>
-          <div class="email">chahathbashashaik05@gmail.com</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== DELIVERY BANNER ===== -->
-<div class="delivery-banner">
-  <div class="delivery-banner-content">
-    <h2>Shop All Our Fresh Meats With<br><span>Free Delivery</span></h2>
-    <p>No minimum order • Delivered in 30 minutes • 100% fresh guaranteed</p>
-  </div>
-  <button class="btn-primary" style="font-size:1rem; padding:16px 36px;"
-    onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
-    Shop Now →
-  </button>
-</div>
-
-<!-- ===== FOOTER ===== -->
-<footer id="about">
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="#" class="logo">Meat<span style="color:var(--red)">Z</span></a>
-      <p>MeatZ is an online service platform where sellers sell fresh meat through this website. Delivery is available. Because of quality and fast delivery, MeatZ became popular in Hyderabad.</p>
-      <div class="social-links">
-        <a href="#" class="social-link">f</a>
-        <a href="#" class="social-link">in</a>
-        <a href="#" class="social-link">t</a>
-        <a href="#" class="social-link">w</a>
-        <a href="#" class="social-link">wa</a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#shop">Shop</a></li>
-        <li><a href="#categories">Categories</a></li>
-        <li><a href="#about">About Us</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Policies</h4>
-      <ul>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms & Conditions</a></li>
-        <li><a href="#">Delivery Terms</a></li>
-        <li><a href="#">Imprint</a></li>
-      </ul>
-    </div>
-    <div class="footer-col footer-contact">
-      <h4>Contact Us</h4>
-      <p><span>📍</span><span>A N Road, Hyderabad, India</span></p>
-      <p><span>📞</span><span>+91 XXXXX XXXXX</span></p>
-      <p><span>🕐</span><span>Open daily: 6 AM – 10 PM</span></p>
-      <p><span>🚚</span><span>Free delivery on all orders</span></p>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>All Rights Reserved © 2024 MeatZ. All pictures are for depiction purposes only.</p>
-    <p>
-      <a href="#">Privacy Policy</a> &nbsp;·&nbsp;
-      <a href="#">Terms</a> &nbsp;·&nbsp;
-      <a href="#">Imprint</a> &nbsp;·&nbsp;
-      <a href="#">Delivery Terms</a>
-    </p>
+<footer>
+  <div class="container footer-grid">
+    <div><div class="logo">Meat<span>Z</span></div><p style="margin-top:10px">Fresh meat delivery made simple. Premium cuts, clean packing and convenient ordering.</p></div>
+    <div><h4>Quick Links</h4><ul><li><a href="#">Home</a></li><li><a href="#shop">Shop</a></li><li><a href="#categories">Categories</a></li></ul></div>
+    <div><h4>Support</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Delivery</a></li></ul></div>
+    <div><h4>Contact</h4><p>📍 Hyderabad, India</p><p>📞 +91 XXXXX XXXXX</p><p>🕐 6 AM – 10 PM</p></div>
   </div>
 </footer>
 
-<!-- ===== CART DRAWER ===== -->
-<div class="cart-overlay" id="cart-overlay" onclick="toggleCart(event)"></div>
-<div class="cart-drawer" id="cart-drawer">
-  <div class="cart-header">
-    <h3>Your Cart 🛒</h3>
-    <button class="close-btn" onclick="closeCart()">✕</button>
-  </div>
-  <div class="cart-items" id="cart-items">
-    <div class="cart-empty">
-      <div class="icon">🛒</div>
-      <p>Your cart is empty.<br>Add some fresh meats!</p>
-    </div>
-  </div>
-  <div class="cart-footer" id="cart-footer" style="display:none">
-    <div class="cart-total">
-      <span>Total</span>
-      <strong id="cart-total">₹0</strong>
-    </div>
-    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout →</button>
-  </div>
-</div>
-
-<!-- ===== TOAST ===== -->
-<div class="toast" id="toast">
-  <span class="toast-icon">✅</span>
-  <span id="toast-msg">Item added to cart!</span>
-</div>
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="cart" id="cart">
+  <div class="cart-head"><b>Your Cart 🛒</b><button class="remove" onclick="closeCart()">✕</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot" id="cartFoot" style="display:none"><div class="total"><span>Total</span><b id="cartTotal">₹0</b></div><button class="btn primary" style="width:100%" onclick="checkout()">Place Order</button></div>
+</aside>
+<div class="toast" id="toast"></div>
 
 <script>
-  /* ===== NAVBAR SCROLL ===== */
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
-  });
+// Direct image URLs are used instead of scraping Google Images.
+// Google Images pages cannot be reliably fetched from browser JavaScript because of CORS.
+// If you have a Google Custom Search API key, replace the image URLs in this data with API results.
 
-  /* ===== CART STATE ===== */
-  let cart = [];
+const images = {
+  chicken: "https://images.unsplash.com/photo-1604503468506-a8da13d11d36?auto=format&fit=crop&w=900&q=85",
+  chicken2: "https://lenaturelmeat.com/cdn/shop/files/ChickenBoanless4.jpg?v=1686216588&width=900",
+  mutton: "https://5.imimg.com/data5/NV/OC/MY-28680328/fresh-mutton-boneless-1000x1000.png",
+  mutton2: "https://images.unsplash.com/photo-1602470521006-aaea8b2f652a?auto=format&fit=crop&w=900&q=85",
+  prawns: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=900&q=85",
+  fish: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=85",
+  crab: "https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=900&q=85",
+  eggs: "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=900&q=85"
+};
 
-  function addToCart(name, price, img) {
-    const existing = cart.find(i => i.name === name);
-    if (existing) {
-      existing.qty++;
-    } else {
-      cart.push({ name, price, img, qty: 1 });
-    }
-    renderCart();
-    updateCartBadge();
-    showToast(`"${name}" added to cart! 🎉`);
-    openCart();
-  }
+const products = [
+  {name:"Chicken Boneless",category:"Chicken",price:279,mrp:299,img:images.chicken},
+  {name:"Chicken Full Body",category:"Chicken",price:329,mrp:369,img:images.chicken2},
+  {name:"Mutton Boneless",category:"Mutton",price:859,mrp:899,img:images.mutton},
+  {name:"Mutton Curry Cut",category:"Mutton",price:799,mrp:849,img:images.mutton2},
+  {name:"Fresh Prawns",category:"Seafood",price:689,mrp:699,img:images.prawns},
+  {name:"Fresh Fish",category:"Fish",price:659,mrp:699,img:images.fish},
+  {name:"Fresh Crab",category:"Seafood",price:749,mrp:799,img:images.crab},
+  {name:"Farm Eggs",category:"Eggs",price:149,mrp:169,img:images.eggs}
+];
 
-  function renderCart() {
-    const container = document.getElementById('cart-items');
-    const footer = document.getElementById('cart-footer');
-    if (cart.length === 0) {
-      container.innerHTML = `<div class="cart-empty"><div class="icon">🛒</div><p>Your cart is empty.<br>Add some fresh meats!</p></div>`;
-      footer.style.display = 'none';
-      return;
-    }
-    footer.style.display = 'block';
-    container.innerHTML = cart.map((item, i) => `
-      <div class="cart-item">
-        <img src="${item.img}" alt="${item.name}">
-        <div class="cart-item-info">
-          <div class="name">${item.name}</div>
-          <div class="weight">${item.qty}kg</div>
-          <div class="price">₹${(item.price * item.qty).toLocaleString('en-IN')}</div>
-        </div>
-        <button class="remove-item" onclick="removeFromCart(${i})">✕</button>
+const categories = [
+  ["Chicken",images.chicken],["Mutton",images.mutton],["Prawns",images.prawns],
+  ["Fish",images.fish],["Crabs",images.crab],["Eggs",images.eggs]
+];
+
+let cart = [];
+
+function renderProducts(list=products){
+  document.getElementById("products").innerHTML = list.map((p,i)=>`
+    <article class="card">
+      <div class="img-wrap">
+        <img class="card-img" src="${p.img}" alt="${p.name}" onerror="this.src=images.chicken">
+        <button class="heart" onclick="wishlist(this)">♡</button>
       </div>
-    `).join('');
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    document.getElementById('cart-total').textContent = '₹' + total.toLocaleString('en-IN');
+      <div class="card-body">
+        <h3>${p.name}</h3><div class="weight">1 kg • ${p.category}</div>
+        <div><span class="price">₹${p.price}</span><span class="old">₹${p.mrp}</span></div>
+        <button class="buy" onclick="addToCart(${i}, '${encodeURIComponent(p.name)}')">🛒 Add to Cart</button>
+      </div>
+    </article>`).join("");
+}
+function renderCategories(){
+  document.getElementById("categoriesGrid").innerHTML = categories.map(c=>`
+    <button class="cat" onclick="filterCategory('${c[0]}')"><img src="${c[1]}" alt="${c[0]}" onerror="this.src=images.chicken"><span>${c[0]}</span></button>`).join("");
+}
+function filterCategory(category){
+  const list = products.filter(p=>p.category===category);
+  renderProducts(list);
+  document.getElementById("shop").scrollIntoView({behavior:"smooth"});
+}
+function searchProducts(){
+  const q=document.getElementById("searchInput").value.trim().toLowerCase();
+  renderProducts(q ? products.filter(p=>(p.name+" "+p.category).toLowerCase().includes(q)) : products);
+  document.getElementById("shop").scrollIntoView({behavior:"smooth"});
+}
+document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")searchProducts()});
+
+function addToCart(index, encodedName){
+  const name=decodeURIComponent(encodedName);
+  const product=products.find(p=>p.name===name);
+  const existing=cart.find(x=>x.name===name);
+  if(existing) existing.qty++;
+  else cart.push({...product,qty:1});
+  updateCart();
+  openCart();
+  toast(name+" added to cart");
+}
+function updateCart(){
+  document.getElementById("cartCount").textContent=cart.reduce((n,p)=>n+p.qty,0);
+  const items=document.getElementById("cartItems");
+  if(!cart.length){
+    items.innerHTML='<div class="empty">🛒<br>Your cart is empty.<br>Add some fresh meat!</div>';
+    document.getElementById("cartFoot").style.display="none";
+    return;
   }
+  document.getElementById("cartFoot").style.display="block";
+  items.innerHTML=cart.map((p,i)=>`
+    <div class="cart-item">
+      <img src="${p.img}" alt="${p.name}" onerror="this.src=images.chicken">
+      <div class="cart-item-info"><b>${p.name}</b><small>${p.qty} kg × ₹${p.price}</small><div class="price">₹${(p.price*p.qty).toLocaleString("en-IN")}</div></div>
+      <button class="remove" onclick="removeItem(${i})">✕</button>
+    </div>`).join("");
+  const total=cart.reduce((s,p)=>s+p.price*p.qty,0);
+  document.getElementById("cartTotal").textContent="₹"+total.toLocaleString("en-IN");
+}
+function removeItem(i){cart.splice(i,1);updateCart()}
+function openCart(){document.getElementById("cart").classList.add("open");document.getElementById("overlay").classList.add("open")}
+function closeCart(){document.getElementById("cart").classList.remove("open");document.getElementById("overlay").classList.remove("open")}
+function checkout(){
+  if(!cart.length)return;
+  toast("🎉 Order placed successfully!");
+  cart=[];updateCart();closeCart();
+}
+function wishlist(btn){btn.textContent=btn.textContent==="♥"?"♡":"♥";btn.style.color=btn.textContent==="♥"?"#d90429":"white";toast(btn.textContent==="♥"?"❤️ Added to wishlist":"Removed from wishlist")}
+function toast(message){const t=document.getElementById("toast");t.textContent=message;t.classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove("show"),2200)}
 
-  function removeFromCart(idx) {
-    cart.splice(idx, 1);
-    renderCart();
-    updateCartBadge();
-  }
-
-  function updateCartBadge() {
-    const total = cart.reduce((s, i) => s + i.qty, 0);
-    document.getElementById('cart-count').textContent = total;
-  }
-
-  function openCart() {
-    document.getElementById('cart-overlay').classList.add('open');
-    document.getElementById('cart-drawer').classList.add('open');
-  }
-
-  function closeCart() {
-    document.getElementById('cart-overlay').classList.remove('open');
-    document.getElementById('cart-drawer').classList.remove('open');
-  }
-
-  function toggleCart(e) {
-    e.preventDefault();
-    const isOpen = document.getElementById('cart-drawer').classList.contains('open');
-    isOpen ? closeCart() : openCart();
-  }
-
-  function checkout() {
-    showToast('🎉 Order placed! Delivering in 30 minutes.');
-    cart = [];
-    renderCart();
-    updateCartBadge();
-    closeCart();
-  }
-
-  /* ===== TOAST ===== */
-  let toastTimer;
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    document.getElementById('toast-msg').textContent = msg;
-    t.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  /* ===== QTY BUTTON ===== */
-  function changeQty(btn, delta) {
-    const span = btn.parentElement.querySelector('span');
-    const current = parseInt(span.textContent);
-    const newVal = Math.max(1, current + delta);
-    span.textContent = newVal + 'kg';
-  }
-
-  /* ===== WISHLIST ===== */
-  function toggleWishlist(btn) {
-    const active = btn.textContent === '♥';
-    btn.textContent = active ? '♡' : '♥';
-    btn.style.color = active ? '' : 'var(--red)';
-    showToast(active ? 'Removed from wishlist' : '❤️ Added to wishlist!');
-  }
-
-  /* ===== SCROLL ANIMATIONS ===== */
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.product-card, .review-card, .feature-item').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(24px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(el);
-  });
+renderProducts();
+renderCategories();
+updateCart();
 </script>
 </body>
 </html>
